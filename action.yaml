@@ -25,6 +25,10 @@ inputs:
   github-username:  # id of input
     description: 'github username to scan'
     required: true
+  fail-on-finding:  # id of input
+    description: 'github username to scan'
+    required: true
+    default: 'true'
 
 outputs:
   time: # id of output
@@ -49,3 +53,4 @@ runs:
     - ${{ inputs.report-format-jsonl }}
     - ${{ inputs.report-format-sarif }}
     - ${{ inputs.github-username }}
+    - ${{ inputs.fail-on-finding }}

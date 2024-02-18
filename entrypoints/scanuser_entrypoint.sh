@@ -10,6 +10,9 @@ NP_REPORT_FORMAT_JSON=$3
 NP_REPORT_FORMAT_JSONL=$4
 NP_REPORT_FORMAT_SARIF=$5
 NP_GITHUB_USERNAME=$6
+NP_FAIL_ON_FINDING=$7
+
+NP_DATASTORE="np.action"
 
 echo "Configuration: "
 echo "UPLOAD_REPORTS: $NP_UPLOAD_REPORTS"
@@ -20,7 +23,7 @@ echo "REPORT_FORMAT_SARIF: $NP_REPORT_FORMAT_SARIF"
 echo "GITHUB_USERNAME: $NP_GITHUB_USERNAME"
 
 echo "Starting scan for $NP_GITHUB_USERNAME"
-noseyparker scan --datastore np.action --github-user $NP_GITHUB_USERNAME
+noseyparker scan --datastore $NP_DATASTORE --github-user $NP_GITHUB_USERNAME
 NP_STATUS_CODE=$?
 
 echo "Scan complete. Status code: $NP_STATUS_CODE"
@@ -29,7 +32,7 @@ if [ $NP_STATUS_CODE -eq 0 ]
 then
     NP_STATUS="success"
 else
-	# Scan failed - exit early
+   # Scan failed - exit early
     NP_STATUS="failed"
     exit 1
 fi
@@ -38,25 +41,35 @@ fi
 
 if [[ $NP_UPLOAD_REPORTS == "true" ]]; then
    if [[ $NP_REPORT_FORMAT_HUMAN == "true" ]]; then
-      noseyparker report --datastore=np.action --format=human --output=$GITHUB_WORKSPACE/reports/report.human
+      noseyparker report --datastore=$NP_DATASTORE --format=human --output=$GITHUB_WORKSPACE/reports/report.human
    fi
    
    if [[ $NP_REPORT_FORMAT_JSON == "true" ]]; then
-      noseyparker report --datastore=np.action --format=json --output=$GITHUB_WORKSPACE/reports/report.json
+      noseyparker report --datastore=$NP_DATASTORE --format=json --output=$GITHUB_WORKSPACE/reports/report.json
    fi
    
    if [[ $NP_REPORT_FORMAT_JSONL == "true" ]]; then
-      noseyparker report --datastore=np.action --format=jsonl --output=$GITHUB_WORKSPACE/reports/report.jsonl
+      noseyparker report --datastore=$NP_DATASTORE --format=jsonl --output=$GITHUB_WORKSPACE/reports/report.jsonl
    fi
    
    if [[ $NP_REPORT_FORMAT_SARIF == "true" ]]; then
-      noseyparker report --datastore=np.action --format=sarif --output=$GITHUB_WORKSPACE/reports/report.sarif
+      noseyparker report --datastore=$NP_DATASTORE --format=sarif --output=$GITHUB_WORKSPACE/reports/report.sarif
    fi
 else
-	echo "Skipping reports. Set upload-reports to 'true' in your actions file to run."
+   echo "Skipping reports. Set upload-reports to 'true' in your actions file to run."
 fi
 
-NP_SUMMARY=$(noseyparker summarize --datastore np.action)
+if [[ $NP_FAIL_ON_FINDING == "true" ]]; then
+   FINDINGS=$(noseyparker report --format=json --datastore=$NP_DATASTORE | jq 'any(.[]; .type == "finding")')
+   if [[ $FINDINGS == "true" ]]; then
+      echo "Findings detected. Failing action..."
+      exit 2
+   else
+      echo "No findings detected. Passing action..."
+   fi
+fi
+
+NP_SUMMARY=$(noseyparker summarize --datastore $NP_DATASTORE)
 echo "Report summary..."
 echo $NP_SUMMARY
 

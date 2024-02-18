@@ -1,8 +1,7 @@
-# Container image that runs your code
 FROM ghcr.io/praetorian-inc/noseyparker:v0.16.0
 
-# Copies your code file from your action repository to the filesystem path `/` of the container
-COPY entrypoint.sh /entrypoint.sh
+apt update && apt install -y jq
 
-# Code file to execute when the docker container starts up (`entrypoint.sh`)
+COPY /entrypoints/scanuser_entrypoint.sh /entrypoint.sh
+
 ENTRYPOINT ["/entrypoint.sh"]
