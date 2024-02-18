@@ -40,6 +40,8 @@ fi
 
 
 if [[ $NP_UPLOAD_REPORTS == "true" ]]; then
+   mkdir -p $GITHUB_WORKSPACE/reports
+
    if [[ $NP_REPORT_FORMAT_HUMAN == "true" ]]; then
       noseyparker report --datastore=$NP_DATASTORE --format=human --output=$GITHUB_WORKSPACE/reports/report.human
    fi
