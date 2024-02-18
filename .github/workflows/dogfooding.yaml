@@ -13,7 +13,7 @@ jobs:
 
       - name: Snoop Dawg
         id: noseyparker
-        uses: bpsizemore/noseyparker-action@v0.0.4
+        uses: bpsizemore/noseyparker-action@v0.0.5
 
         with:
           github-username: 'bpsizemore'
@@ -27,4 +27,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: workspace_artifacts
-          path: ${{ github.workspace/reports }}
+          path: ${{ github.workspace }}/reports/
