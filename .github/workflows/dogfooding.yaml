@@ -13,12 +13,18 @@ jobs:
 
       - name: Snoop Dawg
         id: noseyparker
-        uses: bpsizemore/noseyparker-action@v0.0.1
+        uses: bpsizemore/noseyparker-action@v0.0.2
 
         with:
           github-username: 'bpsizemore'
 
-      - name: Get the noseyparker summary
-        run: echo "The time was ${{ steps.noseyparker.outputs.np_summary }}"
-      - name: Get the noseyparker report
-        run: echo "The time was ${{ steps.noseyparker.outputs.np_report }}"
+      - name: Get the noseyparker status code
+        run: echo "The time was ${{ steps.noseyparker.outputs.np_status_code }}"
+      - name: Get the noseyparker status
+        run: echo "The time was ${{ steps.noseyparker.outputs.np_status }}"
+
+      - name: Upload Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: workspace_artifacts
+          path: ${{ github.workspace }}
