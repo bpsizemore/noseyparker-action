@@ -4,13 +4,6 @@ echo "noseyparker-action startup..."
 time=$(date)
 echo "Current time: $time"
 
-    - ${{ inputs.upload-reports }}
-    - ${{ inputs.report-format-human }}
-    - ${{ inputs.report-format-json }}
-    - ${{ inputs.report-format-jsonl }}
-    - ${{ inputs.report-format-sarif }}
-    - ${{ inputs.github-username }}
-
 NP_UPLOAD_REPORTS=$1
 NP_REPORT_FORMAT_HUMAN=$2
 NP_REPORT_FORMAT_JSON=$3
