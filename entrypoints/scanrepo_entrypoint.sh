@@ -23,6 +23,11 @@ echo "REPORT_FORMAT_JSONL: $NP_REPORT_FORMAT_JSONL"
 echo "REPORT_FORMAT_SARIF: $NP_REPORT_FORMAT_SARIF"
 
 echo "Starting scan for local repository"
+
+# test
+ls
+ls ./main
+
 noseyparker scan --datastore $NP_DATASTORE $NP_REPO_URL
 NP_STATUS_CODE=$?
 

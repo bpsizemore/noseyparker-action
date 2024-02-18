@@ -15,7 +15,7 @@ jobs:
 
       - name: Snoop Dawg
         id: noseyparker
-        uses: bpsizemore/noseyparker-action@v0.0.12
+        uses: bpsizemore/noseyparker-action@v0.0.13
         with:
           github-username: 'main'
           report-name: 'report'
