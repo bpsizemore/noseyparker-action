@@ -38,19 +38,19 @@ fi
 
 if [[ $NP_UPLOAD_REPORTS == "true" ]]; then
    if [[ $NP_REPORT_FORMAT_HUMAN == "true" ]]; then
-      noseyparker report --datastore=np.action --format=human --output=/github/workspace/report.human
+      noseyparker report --datastore=np.action --format=human --output=$GITHUB_WORKSPACE/reports/report.human
    fi
    
    if [[ $NP_REPORT_FORMAT_JSON == "true" ]]; then
-      noseyparker report --datastore=np.action --format=json --output=/github/workspace/report.json
+      noseyparker report --datastore=np.action --format=json --output=$GITHUB_WORKSPACE/reports/report.json
    fi
    
    if [[ $NP_REPORT_FORMAT_JSONL == "true" ]]; then
-      noseyparker report --datastore=np.action --format=jsonl --output=/github/workspace/report.jsonl
+      noseyparker report --datastore=np.action --format=jsonl --output=$GITHUB_WORKSPACE/reports/report.jsonl
    fi
    
    if [[ $NP_REPORT_FORMAT_SARIF == "true" ]]; then
-      noseyparker report --datastore=np.action --format=sarif --output=/github/workspace/report.sarif
+      noseyparker report --datastore=np.action --format=sarif --output=$GITHUB_WORKSPACE/reports/report.sarif
    fi
 else
 	echo "Skipping reports. Set upload-reports to 'true' in your actions file to run."
