@@ -5,12 +5,13 @@ time=$(date)
 echo "Current time: $time"
 
 NP_UPLOAD_REPORTS=$1
-NP_REPORT_FORMAT_HUMAN=$2
-NP_REPORT_FORMAT_JSON=$3
-NP_REPORT_FORMAT_JSONL=$4
-NP_REPORT_FORMAT_SARIF=$5
-NP_REPO_URL=$6
-NP_FAIL_ON_FINDING=$7
+NP_REPORT_NAME=$2
+NP_REPORT_FORMAT_HUMAN=$3
+NP_REPORT_FORMAT_JSON=$4
+NP_REPORT_FORMAT_JSONL=$5
+NP_REPORT_FORMAT_SARIF=$6
+NP_REPO_URL=$7
+NP_FAIL_ON_FINDING=$8
 
 NP_DATASTORE="np.action"
 
@@ -42,19 +43,19 @@ if [[ $NP_UPLOAD_REPORTS == "true" ]]; then
    mkdir -p $GITHUB_WORKSPACE/reports
 
    if [[ $NP_REPORT_FORMAT_HUMAN == "true" ]]; then
-      noseyparker report --datastore=$NP_DATASTORE --format=human --output=$GITHUB_WORKSPACE/reports/report.human
+      noseyparker report --datastore=$NP_DATASTORE --format=human --output="$GITHUB_WORKSPACE/reports/${NP_REPORT_NAME}.txt"
    fi
    
    if [[ $NP_REPORT_FORMAT_JSON == "true" ]]; then
-      noseyparker report --datastore=$NP_DATASTORE --format=json --output=$GITHUB_WORKSPACE/reports/report.json
+      noseyparker report --datastore=$NP_DATASTORE --format=json --output="$GITHUB_WORKSPACE/reports/${NP_REPORT_NAME}.json"
    fi
    
    if [[ $NP_REPORT_FORMAT_JSONL == "true" ]]; then
-      noseyparker report --datastore=$NP_DATASTORE --format=jsonl --output=$GITHUB_WORKSPACE/reports/report.jsonl
+      noseyparker report --datastore=$NP_DATASTORE --format=jsonl --output="$GITHUB_WORKSPACE/reports/${NP_REPORT_NAME}.jsonl"
    fi
    
    if [[ $NP_REPORT_FORMAT_SARIF == "true" ]]; then
-      noseyparker report --datastore=$NP_DATASTORE --format=sarif --output=$GITHUB_WORKSPACE/reports/report.sarif
+      noseyparker report --datastore=$NP_DATASTORE --format=sarif --output="$GITHUB_WORKSPACE/reports/${NP_REPORT_NAME}.sarif"
    fi
 else
    echo "Skipping reports. Set upload-reports to 'true' in your actions file to run."
