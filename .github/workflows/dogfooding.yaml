@@ -10,10 +10,12 @@ jobs:
       # Must checkout the code to run NoseyParker against it.
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          path: main
 
       - name: Snoop Dawg
         id: noseyparker
-        uses: bpsizemore/noseyparker-action@v0.0.9
+        uses: bpsizemore/noseyparker-action@v0.0.10
         with:
           github-username: 'bpsizemore'
           fail-on-finding: 'false'
@@ -39,7 +41,7 @@ jobs:
 
       - name: Snoop Dawg
         id: noseyparker
-        uses: bpsizemore/noseyparker-action@v0.0.9
+        uses: bpsizemore/noseyparker-action@v0.0.10
         with:
           github-username: 'bpsizemore'
           fail-on-finding: 'true'
