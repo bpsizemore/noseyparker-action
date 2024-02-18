@@ -5,11 +5,17 @@ jobs:
     runs-on: ubuntu-latest
     name: A job to say hello
     steps:
-      - name: Hello world action step
-        id: hello
-        uses: actions/noseyparker-action@v1
+      # Must checkout the code to run NoseyParker against it.
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Snoop Dawg
+        id: noseyparker
+        uses: actions/noseyparker-action@v2
         with:
-          who-to-greet: 'Mona the Octocat'
+          github-username: 'bpsizemore'
       # Use the output from the `hello` step
-      - name: Get the output time
-        run: echo "The time was ${{ steps.hello.outputs.time }}"
+      - name: Get the noseyparker summary
+        run: echo "The time was ${{ steps.noseyparker.outputs.np_summary }}"
+      - name: Get the noseyparker report
+        run: echo "The time was ${{ steps.noseyparker.outputs.np_report }}"
