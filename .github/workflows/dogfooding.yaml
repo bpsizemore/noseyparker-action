@@ -3,7 +3,7 @@ on: [push]
 jobs:
   feed_parker:
     runs-on: ubuntu-latest
-    name: A job to say hello
+    name: Noseyparker Scan
     steps:
       # Must checkout the code to run NoseyParker against it.
       - name: Checkout
@@ -12,9 +12,10 @@ jobs:
       - name: Snoop Dawg
         id: noseyparker
         uses: actions/noseyparker-action@v2
+
         with:
           github-username: 'bpsizemore'
-      # Use the output from the `hello` step
+
       - name: Get the noseyparker summary
         run: echo "The time was ${{ steps.noseyparker.outputs.np_summary }}"
       - name: Get the noseyparker report
