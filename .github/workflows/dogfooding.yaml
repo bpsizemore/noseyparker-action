@@ -15,7 +15,7 @@ jobs:
 
       - name: Snoop Dawg
         id: noseyparker
-        uses: bpsizemore/noseyparker-action@v0.0.10
+        uses: bpsizemore/noseyparker-action@v0.0.11
         with:
           github-username: 'bpsizemore'
           fail-on-finding: 'false'
@@ -41,7 +41,7 @@ jobs:
 
       - name: Snoop Dawg
         id: noseyparker
-        uses: bpsizemore/noseyparker-action@v0.0.10
+        uses: bpsizemore/noseyparker-action@v0.0.11
         with:
           github-username: 'bpsizemore'
           fail-on-finding: 'true'

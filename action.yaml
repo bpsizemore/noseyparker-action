@@ -23,9 +23,9 @@ inputs:
     required: false
     default: 'false'
   scan-directory:
-    description: 'directory of the repo to scan'
+    description: 'relative directory of the repo to scan from $GITHUB_WORKSPACE'
     required: false
-    default: '$GITHUB_WORKSPACE/main'
+    default: 'main'
   fail-on-finding:
     description: 'set to true to interrupt the pipeline if there are any findings.'
     required: true
