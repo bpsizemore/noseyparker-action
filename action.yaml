@@ -31,9 +31,12 @@ inputs:
     required: false
     default: 'main'
   fail-on-finding:
-    description: 'set to true to interrupt the pipeline if there are any findings.'
+    description: 'set to true to interrupt the pipeline if there are any findings'
     required: true
     default: 'false'
+  noseyparker-rules-path:
+    description: 'Path to a file or directory that contains noseyparker rules'
+    required: false
 
 outputs:
   time: # id of output
