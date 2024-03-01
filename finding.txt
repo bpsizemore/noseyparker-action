@@ -1,0 +1,3 @@
+ghp_XIxB7KMNdAr3zqWtQqhE94qglHqOzn1D1stg
+
+PASSWORD="BADPASSWORD"

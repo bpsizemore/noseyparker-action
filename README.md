@@ -11,6 +11,8 @@ There are two primary ways to use noseyparker-action. You can use it as a standa
 ### Standalone Action
 ---
 Add this github action to a workflow or create a new one. This will run the action and upload any selected reports as a workspace artifact which can be downloaded after the fact. See the [Github docs on workspace artifacts](https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts) for more details.
+
+This workflow is recommended until you've either tuned noseyparker to reduce noise from false positives or removed any findings flagged by the default settings.
 ```
 name: Noseyparker
 on:workflow_dispatch:

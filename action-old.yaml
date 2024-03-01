@@ -2,8 +2,8 @@
 name: 'Nosey Parker'
 description: 'Scan repository for secrets'
 inputs:
-  local-output:
-    description: 'echo human-readable findings to console'
+  upload-reports:
+    description: 'upload reports'
     required: false
     default: 'true'
   report-name:
@@ -13,7 +13,7 @@ inputs:
   report-format-human:
     description: 'upload human readable (txt) formatted report'
     required: false
-    default: 'false'
+    default: 'true'
   report-format-json:
     description: 'upload json formatted report'
     required: false
@@ -32,12 +32,12 @@ inputs:
     default: 'main'
   fail-on-finding:
     description: 'set to true to interrupt the pipeline if there are any findings'
-    required: false
+    required: true
     default: 'false'
-  scan-args:
-    description: 'Arguments to pass to scan - this is passed after datastore and scan-directory are specified. Arguments like --github-user will override the scan directory for local scanning.'
+  noseyparker-rules-path:
+    description: 'Path to a file or directory that contains noseyparker rules'
     required: false
-    default: ''
+
 outputs:
   time: # id of output
     description: 'The initial runtime.'
@@ -55,7 +55,7 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.local-output }}
+    - ${{ inputs.upload-reports }}
     - ${{ inputs.report-name }}
     - ${{ inputs.report-format-human }}
     - ${{ inputs.report-format-json }}
@@ -63,4 +63,3 @@ runs:
     - ${{ inputs.report-format-sarif }}
     - ${{ inputs.scan-directory }}
     - ${{ inputs.fail-on-finding }}
-    - ${{ inputs.scan-args }}
