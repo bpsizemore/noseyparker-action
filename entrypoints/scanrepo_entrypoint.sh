@@ -70,6 +70,7 @@ if [[ $NP_FAIL_ON_FINDING == "true" ]]; then
    FINDINGS=$(noseyparker report --format=json --datastore=$NP_DATASTORE | jq 'any(.[]; .type == "finding")')
    if [[ $FINDINGS == "true" ]]; then
       echo "Findings detected. Failing action..."
+      echo "np_status_code=2" >> $GITHUB_OUTPUT
       exit 2
    else
       echo "No findings detected. Passing action..."
