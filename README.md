@@ -28,7 +28,7 @@ jobs:
         uses: bpsizemore/noseyparker-action@v1.0.0
         with:
           report-format-human: 'true'
-          report-format-json: 'true'
+          report-format-json: 'false'
           report-format-jsonl: 'false'
           report-format-sarif: 'false'
           fail-on-finding: 'false'
@@ -66,10 +66,9 @@ jobs:
           report-format-json: 'true'
           report-format-jsonl: 'false'
           report-format-sarif: 'false'
-          fail-on-finding: 'false'
+          fail-on-finding: 'true'
           scan-directory: 'main'
           report-name: 'report'
-          fail-on-finding: 'true'
         # Upload report to workspace artifacts
       - name: Upload Report
         uses: actions/upload-artifact@v4
@@ -97,11 +96,7 @@ jobs:
         id: noseyparker
         uses: bpsizemore/noseyparker-action@v1.0.0
         with:
-          report-format-human: 'true'
-          report-format-json: 'true'
-          report-format-jsonl: 'false'
-          report-format-sarif: 'false'
-          fail-on-finding: 'false'
+          report-format-human: 'false'
           scan-directory: 'main'
           report-name: 'report'
           fail-on-finding: 'true'
