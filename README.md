@@ -6,16 +6,14 @@ Uses [praetorian-inc/noseyparker](https://github.com/praetorian-inc/noseyparker)
 
 ## How to use it?
 ---
-There are two primary ways to use noseyparker-action. You can use it as a standalone action to scan your repository for secrets on occasion, or you can use it to fail a pipeline when secrets are detected.
+Below are some example workflows that make use of noseyparker-action
 
 ### Standalone Action
 ---
-Add this github action to a workflow or create a new one. This will run the action and upload any selected reports as a workspace artifact which can be downloaded after the fact. See the [Github docs on workspace artifacts](https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts) for more details.
-
-This workflow is recommended until you've either tuned noseyparker to reduce noise from false positives or removed any findings flagged by the default settings.
+This is the simplest workflow that will run noseyparker on each push and fail to alert if there are any findings. You can review the action output for the human readable report.
 ```
 name: Noseyparker
-on:workflow_dispatch:
+on: push
 jobs:
   noseyparker:
     runs-on: ubuntu-latest
@@ -27,29 +25,82 @@ jobs:
           path: main
       - name: Nose, Parker
         id: noseyparker
-        uses: bpsizemore/noseyparker-action@v1.0.0
+        uses: bpsizemore/noseyparker-action@v0.0.16
         with:
-          report-format-human: 'true'
-          report-format-json: 'false'
-          report-format-jsonl: 'false'
-          report-format-sarif: 'false'
-          fail-on-finding: 'false'
-          scan-directory: 'main'
-          report-name: 'report'
-        # Upload report to workspace artifacts
+          fail-on-finding: 'true'
+```
+
+### Upload reports to workspace artifacts on failure
+---
+noseyparker-action will use `exit 2` if there are findings and `fail-on-finding` is set to true. See the [Github docs on workspace artifacts](https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts) for more details.
+
+```
+name: Noseyparker
+on: push
+jobs:
+  noseyparker:
+    runs-on: ubuntu-latest
+    name: Noseyparker Scan
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: main
+      - name: Nose, Parker
+        id: noseyparker
+        continue-on-error: true
+        uses: bpsizemore/noseyparker-action@v0.0.16
+        with:
+          fail-on-finding: 'true'
       - name: Upload Report
         uses: actions/upload-artifact@v4
         with:
           name: workspace_artifacts
           path: ${{ github.workspace }}/reports/
+      - name: Fail on Noseyparker findings
+        run: if ${{ steps.noseyparker.outputs.np_status_code == 2 }}; then exit 1; fi
 ```
 
-### Failing a pipeline
+### Additional report exports
 ---
-You may also want to run noseyparker as part of a pipeline and have it fail the job. noseyparker-action returns an output `np_status_code` which will be set to 2 if any findings are detected. The following example shows how you can do that while still uploading reports to workspace artifacts for review.
+You can specify additional report output formats.
 ```
 name: Noseyparker
-on:workflow_dispatch:
+on: push
+jobs:
+  noseyparker:
+    runs-on: ubuntu-latest
+    name: Noseyparker Scan
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: main
+      - name: Nose, Parker
+        id: noseyparker
+        continue-on-error: true
+        uses: bpsizemore/noseyparker-action@v0.0.16
+        with:
+          fail-on-finding: 'true'
+          report-format-human: 'true'
+          report-format-json: 'true'
+          report-format-jsonl: 'true'
+          report-format-sarif: 'true'
+      - name: Upload Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: workspace_artifacts
+          path: ${{ github.workspace }}/reports/
+      - name: Fail on Noseyparker findings
+        run: if ${{ steps.noseyparker.outputs.np_status_code == 2 }}; then exit 1; fi
+```
+
+### Custom Arguments
+---
+Use the `scan-args` argument to pass in any additional arguments to the scan command. You could use this alongside files within your repo to add custom rules, scan an entire github org, target a remote repository or any other functionality provided by noseyparker's scan function.
+```
+name: Noseyparker
+on: push
 jobs:
   noseyparker:
     runs-on: ubuntu-latest
@@ -62,15 +113,10 @@ jobs:
       - name: Nose, Parker
         id: noseyparker
         continue-on-error: true
-        uses: bpsizemore/noseyparker-action@v1.0.0
+        uses: bpsizemore/noseyparker-action@v0.0.16
         with:
-          report-format-human: 'true'
-          report-format-json: 'true'
-          report-format-jsonl: 'false'
-          report-format-sarif: 'false'
           fail-on-finding: 'true'
-          scan-directory: 'main'
-          report-name: 'report'
+          scan-args: '--ruleset default --rules /main/np.rules/ --other-args'
         # Upload report to workspace artifacts
       - name: Upload Report
         uses: actions/upload-artifact@v4
@@ -79,28 +125,4 @@ jobs:
           path: ${{ github.workspace }}/reports/
       - name: Fail on Noseyparker findings
         run: if ${{ steps.noseyparker.outputs.np_status_code == 2 }}; then exit 1; fi
-```
-
-You can further simplify this if you don't need or want to upload reports to the workspace artifacts with this example.
-```
-name: Noseyparker
-on:workflow_dispatch:
-jobs:
-  noseyparker:
-    runs-on: ubuntu-latest
-    name: Noseyparker Fail on Finding
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          path: main
-      - name: Nose, Parker
-        id: noseyparker
-        uses: bpsizemore/noseyparker-action@v1.0.0
-        with:
-          report-format-human: 'false'
-          scan-directory: 'main'
-          report-name: 'report'
-          fail-on-finding: 'true'
-
 ```
