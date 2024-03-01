@@ -25,7 +25,7 @@ jobs:
           path: main
       - name: Nose, Parker
         id: noseyparker
-        uses: bpsizemore/noseyparker-action@v0.0.16
+        uses: bpsizemore/noseyparker-action@v1.0.0
         with:
           fail-on-finding: 'true'
 ```
@@ -49,7 +49,7 @@ jobs:
       - name: Nose, Parker
         id: noseyparker
         continue-on-error: true
-        uses: bpsizemore/noseyparker-action@v0.0.16
+        uses: bpsizemore/noseyparker-action@v1.0.0
         with:
           fail-on-finding: 'true'
       - name: Upload Report
@@ -79,7 +79,7 @@ jobs:
       - name: Nose, Parker
         id: noseyparker
         continue-on-error: true
-        uses: bpsizemore/noseyparker-action@v0.0.16
+        uses: bpsizemore/noseyparker-action@v1.0.0
         with:
           fail-on-finding: 'true'
           report-format-human: 'true'
@@ -113,7 +113,7 @@ jobs:
       - name: Nose, Parker
         id: noseyparker
         continue-on-error: true
-        uses: bpsizemore/noseyparker-action@v0.0.16
+        uses: bpsizemore/noseyparker-action@v1.0.0
         with:
           fail-on-finding: 'true'
           scan-args: '--ruleset default --rules /main/np.rules/ --other-args'
