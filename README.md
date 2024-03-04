@@ -65,7 +65,7 @@ jobs:
 ```
 
 The example above uses a custom rules file in your repository root called `np.rules`. Look at `sample-rule.yaml` to see what a valid ruleset looks like and feel free to copy it into your repository as a starting point. 
-
+Look at the [rules documentation](https://github.com/praetorian-inc/noseyparker/blob/main/docs/RULES.md) in the noseyparker repo for more information on creating your own rules and rulesets.
 In order to prevent false positives, you'll want to either create custom rules that target secrets specific to your repositories, or slowly enable rules as you resolve them to prevent a regression in the future.
 
 ### All Parameters
