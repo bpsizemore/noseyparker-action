@@ -1,11 +1,9 @@
 # noseyparker-action
 ---
 ## What it is?
----
 Uses [praetorian-inc/noseyparker](https://github.com/praetorian-inc/noseyparker) to scan a repository for secrets.
 
 ## How to use it?
----
 Below are some example workflows that make use of noseyparker-action
 
 **Note:** It is highly recommended to create and use a custom ruleset when integrating noseyparker into your CI/CD pipeline. Excessive noise and false positives will not help improve security! See the section below on custom rulesets.
@@ -66,7 +64,7 @@ jobs:
         run: if ${{ steps.noseyparker.outputs.np_status_code == 2 }}; then exit 1; fi
 ```
 
-The example above uses a custom rules file in your repository. Look at `sample-rule.yaml` to see what a valid ruleset looks like and feel free to copy it into your repository as a starting point. 
+The example above uses a custom rules file in your repository root called `np.rules`. Look at `sample-rule.yaml` to see what a valid ruleset looks like and feel free to copy it into your repository as a starting point. 
 
 In order to prevent false positives, you'll want to either create custom rules that target secrets specific to your repositories, or slowly enable rules as you resolve them to prevent a regression in the future.
 
@@ -115,38 +113,9 @@ In order to prevent false positives, you'll want to either create custom rules t
 
 ### Upload reports to workspace artifacts on failure
 ---
-noseyparker-action will use `exit 2` if there are findings and `fail-on-finding` is set to true. See the [Github docs on workspace artifacts](https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts) for more details.
+noseyparker-action will use `exit 2` if there are findings and `fail-on-finding` is set to true. See the [Github docs on workspace artifacts](https://docs.github.com/en/actions/using-workflows/storing-workflow-data-as-artifacts) for more details on where reports are stored.
+You can use the `report-format-x` arguments to specify what report types should be generated. It's worth noting that the `report-format-human` option is set to true if `local-output` is set to true, and the `report-format-json` option is set to true if the `fail-on-finding` option is set to true. 
 
-```
-name: Noseyparker
-on: push
-jobs:
-  noseyparker:
-    runs-on: ubuntu-latest
-    name: Noseyparker Scan
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          path: main
-      - name: Nose, Parker
-        id: noseyparker
-        continue-on-error: true
-        uses: bpsizemore/noseyparker-action@v1.0.0
-        with:
-          fail-on-finding: 'true'
-      - name: Upload Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: workspace_artifacts
-          path: ${{ github.workspace }}/reports/
-      - name: Fail on Noseyparker findings
-        run: if ${{ steps.noseyparker.outputs.np_status_code == 2 }}; then exit 1; fi
-```
-
-### Additional report exports
----
-You can specify additional report output formats.
 ```
 name: Noseyparker
 on: push
@@ -177,3 +146,8 @@ jobs:
       - name: Fail on Noseyparker findings
         run: if ${{ steps.noseyparker.outputs.np_status_code == 2 }}; then exit 1; fi
 ```
+
+## Contributing
+Feel free to open a PR if you would like to contribute improvements and I will review and consider using it. You can also fork this repository and make alternative public, or private, versions for use in your repo.
+
+If you have custom rulesets or rules that you build for your own repositories, please consider contributing them back to to the [official noseyparker repository](https://github.com/praetorian-inc/noseyparker).
