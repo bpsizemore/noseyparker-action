@@ -1,0 +1,19 @@
+rulesets:
+
+- id: custom-ruleset
+  name: Nosey Parker custom rulset
+  description: Custom ruleset for np
+  include_rule_ids:
+  - np.aws.2          # AWS Secret Access Key
+  - np.aws.4          # AWS Session Token
+  - np.aws.5          # Amazon MWS Auth Token
+  - np.github.1       # GitHub Personal Access Token
+  - np.github.2       # GitHub OAuth Access Token
+  - np.github.3       # GitHub App Token
+  - np.github.4       # GitHub Refresh Token
+  - np.github.6       # GitHub Secret Key
+  - np.github.7       # GitHub Personal Access Token (fine-grained permissions)
+  - np.google.2       # Google OAuth Client Secret (prefixed)
+  - np.google.3       # Google OAuth Client Secret
+  - np.google.4       # Google OAuth Access Token
+  - np.google.5       # Google API Key
